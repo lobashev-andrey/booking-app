@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/booking_db
+    hikari:
+      schema: booking_schema
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS booking_schema
+      connection-timeout: 10000
+  jpa:
+    generate-ddl: true
