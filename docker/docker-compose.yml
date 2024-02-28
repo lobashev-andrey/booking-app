@@ -6,6 +6,6 @@ services:
     ports:
       - "5433:5432"
     environment:
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_DB: booking_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: booking_db
