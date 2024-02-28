@@ -1,7 +1,8 @@
-package com.example.bookingapp;
+package com.example.bookingapp.service;
 
 import com.example.bookingapp.entity.Hotel;
 import com.example.bookingapp.error.EntityNotFoundException;
+import com.example.bookingapp.repository.HotelRepository;
 import com.example.bookingapp.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,5 +38,11 @@ public class HotelService {
 
     public void delete(Long id) {
         repository.delete(findById(id));
+    }
+
+
+
+    public Long idByHotel(Hotel hotel) {
+        return hotel.getId();
     }
 }

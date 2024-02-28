@@ -5,13 +5,14 @@ import com.example.bookingapp.dto.HotelRequest;
 import com.example.bookingapp.dto.HotelResponse;
 import com.example.bookingapp.dto.HotelResponseShort;
 import com.example.bookingapp.entity.Hotel;
+import com.example.bookingapp.service.HotelService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { HotelService.class})
 public interface HotelMapper {
 
     Hotel hotelRequestToHotel(HotelRequest request);
@@ -30,5 +31,6 @@ public interface HotelMapper {
                 hotels.stream().map(this::hotelToHotelResponse).toList()
         );
     }
+
 
 }

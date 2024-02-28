@@ -5,13 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
-@Entity(name = "hotels")
+@Entity(name = "rooms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hotel {
+public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +17,19 @@ public class Hotel {
 
     private String name;
 
-    private String announce;
+    private String description;
 
-    private String address;
+    private String number;
 
-    private Float distance;
+    private Integer price;
 
-    private Float rating = 0f;
+    private Integer capacity;
 
-    private Integer votes = 0;
+    @ManyToOne
+    @JoinColumn(name = "hotelId")
+    private Hotel hotel;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    private Set<Room> rooms;
+//    private Set<Date> unavailable_dates;
+
+
 }

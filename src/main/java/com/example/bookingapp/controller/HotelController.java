@@ -1,12 +1,10 @@
 package com.example.bookingapp.controller;
 
-import com.example.bookingapp.HotelService;
+import com.example.bookingapp.service.HotelService;
 import com.example.bookingapp.dto.HotelListResponse;
 import com.example.bookingapp.dto.HotelRequest;
 import com.example.bookingapp.dto.HotelResponse;
 import com.example.bookingapp.dto.HotelResponseShort;
-import com.example.bookingapp.error.EntityNotFoundException;
-import com.example.bookingapp.error.IncorrectRequestException;
 import com.example.bookingapp.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
