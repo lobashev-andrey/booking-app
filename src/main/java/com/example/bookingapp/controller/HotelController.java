@@ -5,6 +5,8 @@ import com.example.bookingapp.dto.HotelListResponse;
 import com.example.bookingapp.dto.HotelRequest;
 import com.example.bookingapp.dto.HotelResponse;
 import com.example.bookingapp.dto.HotelResponseShort;
+import com.example.bookingapp.error.EntityNotFoundException;
+import com.example.bookingapp.error.IncorrectRequestException;
 import com.example.bookingapp.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ public class HotelController {
 
     @GetMapping
     public ResponseEntity<HotelListResponse> getAll() {
+
         return ResponseEntity.ok(
                 mapper.hotelListToHotelListResponse(
                         service.findAllHotels()

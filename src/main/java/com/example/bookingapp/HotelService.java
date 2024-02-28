@@ -1,6 +1,7 @@
 package com.example.bookingapp;
 
 import com.example.bookingapp.entity.Hotel;
+import com.example.bookingapp.error.EntityNotFoundException;
 import com.example.bookingapp.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class HotelService {
     }
 
     public Hotel findById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("В базе данных нет отеля с ID " + id));
     }
 
     public Hotel create(Hotel hotel) {
@@ -34,8 +36,6 @@ public class HotelService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        repository.delete(findById(id));
     }
-
-
 }
