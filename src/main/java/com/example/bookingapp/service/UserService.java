@@ -81,4 +81,9 @@ public class UserService {
             throw new IncorrectRequestException("Пользователь с таким email уже есть в базе данных");
         }
     }
+
+    // for BookingMapper
+    public Long idByUser(User user) {
+        return user.getId();
+    }
 }

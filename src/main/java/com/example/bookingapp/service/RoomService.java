@@ -15,9 +15,10 @@ public class RoomService {
 
     private final RoomRepository repository;
 
-    public List<Room> findAll() {
-        return repository.findAll();
-    }
+///////////////////////////////////////////// Отсутствует в техзадании
+//    public List<Room> findAll() {
+//        return repository.findAll();
+//    }
 
     public Room findById(Long id) {
         return repository.findById(id)
@@ -38,5 +39,10 @@ public class RoomService {
 
     public void delete(Long id) {
         repository.delete(findById(id));
+    }
+
+    // for BookingMapper
+    public Long idByRoom(Room room) {
+        return room.getId();
     }
 }

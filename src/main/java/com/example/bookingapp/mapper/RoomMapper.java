@@ -16,6 +16,7 @@ public interface RoomMapper {
     Room roomRequestToRoom(RoomRequest request);
 
     @Mapping(source = "id", target = "id")
+    @Mapping(source = "request.hotelId", target = "hotel")
     Room roomRequestToRoom(Long id, RoomRequest request);
 
     @Mapping(source = "hotel", target = "hotelId")

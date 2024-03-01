@@ -42,6 +42,7 @@ public class HotelService {
 
 
 
+    // for RoomMapper
     public Long idByHotel(Hotel hotel) {
         return hotel.getId();
     }
