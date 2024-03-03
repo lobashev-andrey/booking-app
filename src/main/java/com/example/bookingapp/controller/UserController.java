@@ -5,9 +5,7 @@ import com.example.bookingapp.dto.UserRequest;
 import com.example.bookingapp.dto.UserResponse;
 import com.example.bookingapp.mapper.UserMapper;
 import com.example.bookingapp.service.UserService;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,14 +30,6 @@ public class UserController {
         return ResponseEntity.ok(
                 mapper.userToUserResponse(
                         service.findById(id)));
-    }
-
-    @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody UserRequest request, @PathParam("role") String role) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                mapper.userToUserResponse(
-                        service.create(
-                                mapper.userRequestToUser(request),  role)));
     }
 
     @PutMapping("/{id}")

@@ -11,7 +11,6 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {HotelService.class})
 public interface RoomMapper {
 
-
     @Mapping(source = "hotelId", target = "hotel")
     Room roomRequestToRoom(RoomRequest request);
 
@@ -21,6 +20,5 @@ public interface RoomMapper {
 
     @Mapping(source = "hotel", target = "hotelId")
     RoomResponse roomToRoomResponse(Room room);
-
 
 }

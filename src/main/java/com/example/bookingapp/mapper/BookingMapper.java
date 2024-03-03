@@ -16,8 +16,6 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = { UserService.class, RoomService.class, BookingDateParser.class})
 public interface BookingMapper {
-
-    @Mapping(source = "request.userId", target = "user")
     @Mapping(source = "request.roomId", target = "room")
     @Mapping(source = "request.checkIn", target = "checkIn")
     @Mapping(source = "request.checkOut", target = "checkOut")
@@ -25,7 +23,6 @@ public interface BookingMapper {
 
 ///////////////////////////////////////////// Отсутствует в техзадании
 //    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "request.userId", target = "user")
 //    @Mapping(source = "request.roomId", target = "room")
 //    @Mapping(source = "request.checkIn", target = "checkIn")
 //    @Mapping(source = "request.checkOut", target = "checkOut")

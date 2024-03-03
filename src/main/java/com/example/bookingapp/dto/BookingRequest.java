@@ -11,8 +11,6 @@ public class BookingRequest {
 
     private Long roomId;
 
-    private Long userId;
-
     private String checkIn;
 
     private String checkOut;

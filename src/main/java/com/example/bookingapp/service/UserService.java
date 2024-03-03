@@ -27,6 +27,11 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("В базе данных нет пользователя с ID " + id));
     }
 
+    public User findByName(String name) {
+        return repository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("В базе данных нет пользователя с логином " + name));
+    }
+
     @Transactional
     public User create(User user, String role) {
         checkNameAndEmailForCreate(user);
@@ -35,6 +40,7 @@ public class UserService {
         return repository.save(user);
     }
 
+    @Transactional
     public User update(User user) {
         User existedUser = findById(user.getId());
 
@@ -51,7 +57,6 @@ public class UserService {
 
 
 
-
     public UserRole userRoleFromRole(String role) {
         if (role == null) {
             throw new IncorrectRequestException("В запросе необходимо указать параметр role");
@@ -63,21 +68,27 @@ public class UserService {
     }
 
     public void checkNameAndEmailForCreate(User user) {
-        if (repository.findByName(user.getName()).isPresent()) {
-            throw new IncorrectRequestException("Пользователь с таким именем уже есть в базе данных");
-        }
-        if (repository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IncorrectRequestException("Пользователь с таким email уже есть в базе данных");
-        }
+        checkName(user.getName());
+        checkEmail(user.getEmail());
     }
 
     public void checkNameAndEmailForUpdate(User user, User existedUser) {
-        if ( !user.getName().equals(existedUser.getName()) &&
-                repository.findByName(user.getName()).isPresent() ) {
+        if ( !user.getName().equals(existedUser.getName()) ) {
+            checkName(user.getName());
+        }
+        if ( !user.getEmail().equals(existedUser.getEmail()) ) {
+            checkEmail(user.getEmail());
+        }
+    }
+
+    public void checkName(String name) {
+        if (repository.findByName(name).isPresent()) {
             throw new IncorrectRequestException("Пользователь с таким именем уже есть в базе данных");
         }
-        if ( !user.getEmail().equals(existedUser.getEmail()) &&
-                repository.findByEmail(user.getEmail()).isPresent() ) {
+    }
+
+    public void checkEmail(String email) {
+        if (repository.findByEmail(email).isPresent()) {
             throw new IncorrectRequestException("Пользователь с таким email уже есть в базе данных");
         }
     }

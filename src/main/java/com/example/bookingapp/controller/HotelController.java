@@ -9,6 +9,7 @@ import com.example.bookingapp.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,6 +38,7 @@ public class HotelController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HotelResponse> create(@RequestBody HotelRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.hotelToHotelResponse(
@@ -45,6 +47,7 @@ public class HotelController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HotelResponseShort> update(@PathVariable Long id, @RequestBody HotelRequest request){
         return ResponseEntity.ok(
                 mapper.hotelToHotelResponseShort(
@@ -53,6 +56,7 @@ public class HotelController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

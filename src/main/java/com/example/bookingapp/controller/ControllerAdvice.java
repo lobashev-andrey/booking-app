@@ -5,6 +5,7 @@ import com.example.bookingapp.error.EntityNotFoundException;
 import com.example.bookingapp.error.IncorrectRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -27,11 +28,20 @@ public class ControllerAdvice {
                 .body(new ErrorResponse(ex.getLocalizedMessage()));
     }
 
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> accessDenied(AccessDeniedException ex) {
+
+        return ResponseEntity
+                .status(400)
+                .body(new ErrorResponse("У вас недостаточно прав для данного запроса"));
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> unhandledError(RuntimeException ex) {
 
         return ResponseEntity
                 .status(500)
-                .body(new ErrorResponse("Ошибка сервера. Мы уже работаем над ее устранением. Попробуйте повторить запрос позднее"));
+                .body(new ErrorResponse("Ошибка сервера. Попробуйте повторить запрос позже"));
     }
 }

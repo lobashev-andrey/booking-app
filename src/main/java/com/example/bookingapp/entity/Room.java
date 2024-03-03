@@ -29,7 +29,4 @@ public class Room {
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 
-//    private Set<Date> unavailable_dates;
-
-
 }
