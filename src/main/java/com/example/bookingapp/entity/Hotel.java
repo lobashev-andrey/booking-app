@@ -21,6 +21,8 @@ public class Hotel {
 
     private String announce;
 
+    private String city;
+
     private String address;
 
     private Float distance;

@@ -2,9 +2,12 @@ package com.example.bookingapp.service;
 
 import com.example.bookingapp.entity.Hotel;
 import com.example.bookingapp.error.EntityNotFoundException;
+import com.example.bookingapp.filter.HotelFilter;
+import com.example.bookingapp.filter.HotelSpecification;
 import com.example.bookingapp.repository.HotelRepository;
 import com.example.bookingapp.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,12 @@ public class HotelService {
 
     public List<Hotel> findAllHotels() {
         return repository.findAll();
+    }
+
+    public List<Hotel> filterBy(HotelFilter filter) {
+        return repository.findAll(
+                HotelSpecification.withFilter(filter), PageRequest.of(filter.getPageNumber(), filter.getPageSize()))
+                .getContent();
     }
 
     public Hotel findById(Long id) {
@@ -41,6 +50,9 @@ public class HotelService {
         repository.delete(findById(id));
     }
 
+    public long count() {
+        return repository.count();
+    }
 
 
     // for RoomMapper

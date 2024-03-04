@@ -1,4 +1,4 @@
-package com.example.bookingapp.dto;
+package com.example.bookingapp.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelResponseShort {
+public class HotelFilter {
 
-    private Long id;
+    private Long hotelId;
 
     private String name;
 
@@ -20,4 +20,12 @@ public class HotelResponseShort {
     private String address;
 
     private Float distance;
+
+    private Float rating;
+
+    private Integer votes;
+
+    private Integer pageSize;
+
+    private Integer pageNumber;
 }

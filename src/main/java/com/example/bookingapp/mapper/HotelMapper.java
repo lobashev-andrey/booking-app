@@ -1,9 +1,6 @@
 package com.example.bookingapp.mapper;
 
-import com.example.bookingapp.dto.HotelListResponse;
-import com.example.bookingapp.dto.HotelRequest;
-import com.example.bookingapp.dto.HotelResponse;
-import com.example.bookingapp.dto.HotelResponseShort;
+import com.example.bookingapp.dto.*;
 import com.example.bookingapp.entity.Hotel;
 import com.example.bookingapp.service.HotelService;
 import org.mapstruct.Mapper;
@@ -25,12 +22,26 @@ public interface HotelMapper {
 
     HotelResponse hotelToHotelResponse(Hotel hotel);
 
+    List<HotelResponse> hotelsToHotelResponses(List<Hotel> hotels);
+
+
+//    default HotelListResponse hotelListToHotelListResponse(List<Hotel> hotels) {
+//
+//        return new HotelListResponse(
+//                hotels.stream().map(this::hotelToHotelResponse).toList()
+//        );
+//    }
     default HotelListResponse hotelListToHotelListResponse(List<Hotel> hotels) {
 
-        return new HotelListResponse(
-                hotels.stream().map(this::hotelToHotelResponse).toList()
-        );
+    return new HotelListResponse( hotelsToHotelResponses(hotels));
     }
+
+    default HotelFilterListResponse hotelListToHotelFilterListResponse(Long count, List<Hotel> hotels) {
+        return new HotelFilterListResponse( count, hotelsToHotelResponses(hotels) );
+    }
+
+
+
 
 
 }

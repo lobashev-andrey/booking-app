@@ -1,12 +1,10 @@
 package com.example.bookingapp.controller;
 
+import com.example.bookingapp.dto.*;
 import com.example.bookingapp.entity.Hotel;
 import com.example.bookingapp.error.IncorrectRequestException;
+import com.example.bookingapp.filter.HotelFilter;
 import com.example.bookingapp.service.HotelService;
-import com.example.bookingapp.dto.HotelListResponse;
-import com.example.bookingapp.dto.HotelRequest;
-import com.example.bookingapp.dto.HotelResponse;
-import com.example.bookingapp.dto.HotelResponseShort;
 import com.example.bookingapp.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,17 @@ public class HotelController {
                 mapper.hotelListToHotelListResponse(
                         service.findAllHotels()
                 ));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<HotelFilterListResponse> filterBy(HotelFilter filter) {
+
+        return ResponseEntity.ok(
+                mapper.hotelListToHotelFilterListResponse(
+                        service.count(), service.filterBy(filter))
+        );
+
+
     }
 
     @GetMapping("/{id}")

@@ -15,6 +15,8 @@ public class HotelResponse {
 
     private String announce;
 
+    private String city;
+
     private String address;
 
     private Float distance;

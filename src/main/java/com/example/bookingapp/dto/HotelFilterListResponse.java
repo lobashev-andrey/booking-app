@@ -4,18 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelRequest {
+public class HotelFilterListResponse {
 
-    private String name;
+    private Long count;
 
-    private String announce;
+    private List<HotelResponse> hotels;
 
-    private String city;
-
-    private String address;
-
-    private Float distance;
 }
