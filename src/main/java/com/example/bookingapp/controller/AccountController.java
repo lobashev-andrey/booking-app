@@ -30,9 +30,6 @@ public class AccountController {
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        System.out.println("***********" + request.getPassword());
-        System.out.println("***********" + role);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 mapper.userToUserResponse(
                         service.create(

@@ -1,5 +1,7 @@
 package com.example.bookingapp.controller;
 
+import com.example.bookingapp.entity.Hotel;
+import com.example.bookingapp.error.IncorrectRequestException;
 import com.example.bookingapp.service.HotelService;
 import com.example.bookingapp.dto.HotelListResponse;
 import com.example.bookingapp.dto.HotelRequest;
@@ -55,10 +57,82 @@ public class HotelController {
                                 mapper.hotelRequestToHotel(id, request))));
     }
 
+    @PutMapping("/{id}/{mark}")
+    public ResponseEntity<HotelResponse> changeRating(@PathVariable Long id, @PathVariable Integer mark) {
+
+        Hotel hotel = vote(service.findById(id), mark);
+
+        return ResponseEntity.ok(
+                mapper.hotelToHotelResponse(
+                        service.update(
+                                hotel)));
+    }
+
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    // Вариант с хранением rawRating - близко к техзаданию (если голосов ближе к 10 млн, надо Double вместо Float)
+    private Hotel vote(Hotel hotel, Integer mark) {
+        if(mark < 1 || mark > 5) {
+            throw new IncorrectRequestException("Для оценки отеля используйте числа от 1 до 5");
+        }
+        Float rawRating = hotel.getRawRating();
+        Integer votes = hotel.getVotes() + 1;
+
+        rawRating = (rawRating * votes - rawRating + mark) / votes;
+
+        Float rating = Math.round(rawRating * 10) / 10f;
+
+        System.out.print(votes + " mark: " + mark + " rating: " + rating + " rawRating: " + rawRating);
+
+        hotel.setVotes(votes);
+        hotel.setRating(rating);
+        hotel.setRawRating(rawRating);
+
+        System.out.println(" rawRating из базы: " + hotel.getRawRating());
+
+        return hotel;
+    }
+
+    // Вариант как в техзадании - дает некорректные результаты
+//    private Hotel vote(Hotel hotel, Integer mark) {
+//        if(mark < 1 || mark > 5) {
+//            throw new IncorrectRequestException("Для оценки отеля используйте числа от 1 до 5");
+//        }
+//
+//        Float rating = hotel.getRating();
+//        Integer votes = hotel.getVotes() + 1;
+//
+//        rating = (rating * votes - rating + mark) / votes;
+//        rating = Math.round(rating * 10) / 10f;
+//
+//        hotel.setRating(rating);
+//        hotel.setVotes(votes);
+//
+//        return hotel;
+//    }
+
+//    // Вариант с хранением totalRating  ( Надо добавить в сущность    private Float totalRating = 0f; )
+//    private Hotel vote(Hotel hotel, Integer mark) {
+//        if(mark < 1 || mark > 5) {
+//            throw new IncorrectRequestException("Для оценки отеля используйте числа от 1 до 5");
+//        }
+//        Float newTotalRating = hotel.getTotalRating() + mark;
+//        Integer newVotes = hotel.getVotes() + 1;
+//
+//        Float rating = Math.round(newTotalRating / newVotes * 10) / 10f;
+//
+//        hotel.setTotalRating(newTotalRating);
+//        hotel.setVotes(newVotes);
+//        hotel.setRating(rating);
+//
+//        return hotel;
+//    }
+
+
 }

@@ -27,6 +27,8 @@ public class Hotel {
 
     private Float rating = 0f;
 
+    private Float rawRating = 0f;
+
     private Integer votes = 0;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)

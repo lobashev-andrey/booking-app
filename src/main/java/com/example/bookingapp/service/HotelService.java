@@ -36,6 +36,7 @@ public class HotelService {
         return repository.save(existedHotel);
     }
 
+
     public void delete(Long id) {
         repository.delete(findById(id));
     }
