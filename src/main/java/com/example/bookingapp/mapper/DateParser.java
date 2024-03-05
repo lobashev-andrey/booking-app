@@ -9,9 +9,9 @@ import java.time.format.DateTimeParseException;
 
 @Component
 @NoArgsConstructor
-public class BookingDateParser {
+public class DateParser {
 
-    public LocalDate parse(String date) {
+    public static LocalDate parse(String date) {
         try {
             return LocalDate.parse(date);
         } catch (DateTimeParseException ex) {

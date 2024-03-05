@@ -4,6 +4,7 @@ import com.example.bookingapp.dto.BookingListResponse;
 import com.example.bookingapp.dto.BookingRequest;
 import com.example.bookingapp.dto.BookingResponse;
 import com.example.bookingapp.entity.Booking;
+import com.example.bookingapp.filter.BookingFilter;
 import com.example.bookingapp.mapper.BookingMapper;
 import com.example.bookingapp.service.BookingService;
 import com.example.bookingapp.service.UserService;
@@ -26,12 +27,13 @@ public class BookingController {
 
     private final UserService userService;
 
+
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<BookingListResponse> findAll() {
+    public ResponseEntity<BookingListResponse> findAll(BookingFilter filter) {
         return ResponseEntity.ok(
                 mapper.bookingListToBookingListResponse(
-                        service.findAll()));
+                        service.findAll(filter)));
     }
 
     @PostMapping

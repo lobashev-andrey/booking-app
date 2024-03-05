@@ -14,19 +14,12 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = { UserService.class, RoomService.class, BookingDateParser.class})
+        uses = { UserService.class, RoomService.class, DateParser.class})
 public interface BookingMapper {
     @Mapping(source = "request.roomId", target = "room")
     @Mapping(source = "request.checkIn", target = "checkIn")
     @Mapping(source = "request.checkOut", target = "checkOut")
     Booking bookingRequestToBooking(BookingRequest request);
-
-///////////////////////////////////////////// Отсутствует в техзадании
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "request.roomId", target = "room")
-//    @Mapping(source = "request.checkIn", target = "checkIn")
-//    @Mapping(source = "request.checkOut", target = "checkOut")
-//    Booking bookingRequestToBooking(Long id, BookingRequest request);
 
     @Mapping(source = "user", target = "userId")
     @Mapping(source = "room", target = "roomId")

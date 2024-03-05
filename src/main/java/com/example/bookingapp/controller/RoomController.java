@@ -1,7 +1,9 @@
 package com.example.bookingapp.controller;
 
+import com.example.bookingapp.dto.RoomFilterListResponse;
 import com.example.bookingapp.dto.RoomRequest;
 import com.example.bookingapp.dto.RoomResponse;
+import com.example.bookingapp.filter.RoomFilter;
 import com.example.bookingapp.mapper.RoomMapper;
 import com.example.bookingapp.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,15 @@ public class RoomController {
 
     private final RoomMapper mapper;
 
+    @GetMapping("/filter")
+    public ResponseEntity<RoomFilterListResponse> filterBy(RoomFilter filter) {
+        return ResponseEntity.ok(
+                mapper.roomListToRoomFilterListResponse(
+                        service.filterBy(filter)
+                )
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<RoomResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(
@@ -26,7 +37,7 @@ public class RoomController {
                         service.findById(id)));
     }
 
-    @PostMapping
+@PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<RoomResponse> create(@RequestBody RoomRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)

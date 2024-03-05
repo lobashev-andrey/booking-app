@@ -13,12 +13,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
-    User userRequestToUser(UserRequest request);    // PasswordEncoder !!!!!!!!!!!!
+    User userRequestToUser(UserRequest request);
 
     @Mapping(source = "id", target = "id")
     User userRequestToUser(Long id, UserRequest request);
 
-    UserResponse userToUserResponse(User user); // PasswordEncoder.decode() !!!!!!!!
+    UserResponse userToUserResponse(User user);
 
     default UserListResponse userListToUserListResponse(List<User> users) {
         return  new UserListResponse(

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long>, JpaSpecificationExecutor<Hotel> {
 
-    Page<Hotel> findAll(Specification<Hotel> specification, Pageable pageable);
+    @Override
+    Page<Hotel> findAll(Specification<Hotel> spec, Pageable pageable);
 
 }

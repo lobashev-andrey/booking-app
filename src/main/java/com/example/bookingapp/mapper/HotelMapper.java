@@ -24,16 +24,8 @@ public interface HotelMapper {
 
     List<HotelResponse> hotelsToHotelResponses(List<Hotel> hotels);
 
-
-//    default HotelListResponse hotelListToHotelListResponse(List<Hotel> hotels) {
-//
-//        return new HotelListResponse(
-//                hotels.stream().map(this::hotelToHotelResponse).toList()
-//        );
-//    }
     default HotelListResponse hotelListToHotelListResponse(List<Hotel> hotels) {
-
-    return new HotelListResponse( hotelsToHotelResponses(hotels));
+        return new HotelListResponse( hotelsToHotelResponses(hotels));
     }
 
     default HotelFilterListResponse hotelListToHotelFilterListResponse(Long count, List<Hotel> hotels) {
