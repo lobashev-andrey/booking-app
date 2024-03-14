@@ -5,20 +5,32 @@ import com.example.bookingapp.entity.UserRole;
 import com.example.bookingapp.error.EntityNotFoundException;
 import com.example.bookingapp.error.IncorrectRequestException;
 import com.example.bookingapp.repository.UserRepository;
+import com.example.bookingapp.statistics.model.KafkaMessage;
+import com.example.bookingapp.statistics.model.KafkaUserMessage;
 import com.example.bookingapp.utils.BeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    @Value("${app.kafka.kafka-user-topic}")
+    private String userTopic;
+
     private final UserRepository repository;
 
+    private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
+
     public List<User> findAll() {
+
+
         return repository.findAll();
     }
 
@@ -37,7 +49,11 @@ public class UserService {
         checkNameAndEmailForCreate(user);
 
         user.setRole(userRoleFromRole(role));
-        return repository.save(user);
+
+        User createdUser = repository.save(user);
+        kafkaTemplate.send(userTopic, new KafkaUserMessage(createdUser.getId()));
+
+        return createdUser;
     }
 
     @Transactional
@@ -61,10 +77,11 @@ public class UserService {
         if (role == null) {
             throw new IncorrectRequestException("В запросе необходимо указать параметр role");
         }
-        if (role.matches("USER|ADMIN")) {
+        try {
             return UserRole.valueOf(role);
+        } catch (IllegalArgumentException ex){
+            throw new IncorrectRequestException("У параметра role должно быть значение 'USER' или 'ADMIN'");
         }
-        throw new IncorrectRequestException("У параметра role должно быть значение 'USER' или 'ADMIN'");
     }
 
     public void checkNameAndEmailForCreate(User user) {

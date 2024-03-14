@@ -20,6 +20,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
+	implementation ("org.springframework.kafka:spring-kafka")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")

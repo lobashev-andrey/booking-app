@@ -4,8 +4,12 @@ import com.example.bookingapp.entity.Booking;
 import com.example.bookingapp.error.IncorrectRequestException;
 import com.example.bookingapp.filter.BookingFilter;
 import com.example.bookingapp.repository.BookingRepository;
+import com.example.bookingapp.statistics.model.KafkaBookingMessage;
+import com.example.bookingapp.statistics.model.KafkaMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,7 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingService {
 
+    @Value("${app.kafka.kafka-booking-topic}")
+    private String bookingTopic;
+
     private final BookingRepository repository;
+
+    private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
 
     public List<Booking> findAll(BookingFilter filter) {
         return repository.findAll(
@@ -25,7 +34,14 @@ public class BookingService {
     public Booking create(Booking booking) {
         checkBeforeBooking(booking);
 
-        return repository.save(booking);
+        Booking createdBooking = repository.save(booking);
+        kafkaTemplate.send(bookingTopic,
+                            new KafkaBookingMessage(
+                                    createdBooking.getRoom().getId(),
+                                    createdBooking.getUser().getId(),
+                                    createdBooking.getCheckIn().toString(),
+                                    createdBooking.getCheckOut().toString()));
+        return createdBooking;
     }
 
     public void checkBeforeBooking(Booking booking) {

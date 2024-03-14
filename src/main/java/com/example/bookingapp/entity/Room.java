@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity(name = "rooms")
 @Data
 @NoArgsConstructor
@@ -28,7 +26,7 @@ public class Room {
     private Integer capacity;
 
     @ManyToOne
-    @JoinColumn(name = "hotelId")
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
 }

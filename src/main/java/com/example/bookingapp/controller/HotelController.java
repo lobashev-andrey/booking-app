@@ -88,7 +88,7 @@ public class HotelController {
     // Вариант с хранением rawRating - близко к техзаданию (если голосов ближе к 10 млн, надо Double вместо Float)
     private Hotel vote(Hotel hotel, Integer mark) {
         if(mark < 1 || mark > 5) {
-            throw new IncorrectRequestException("Для оценки отеля используйте числа от 1 до 5");
+            throw new IncorrectRequestException("Для оценки отеля используйте целые числа от 1 до 5");
         }
         Float rawRating = hotel.getRawRating();
         Integer votes = hotel.getVotes() + 1;
@@ -97,13 +97,9 @@ public class HotelController {
 
         Float rating = Math.round(rawRating * 10) / 10f;
 
-        System.out.print(votes + " mark: " + mark + " rating: " + rating + " rawRating: " + rawRating);
-
         hotel.setVotes(votes);
         hotel.setRating(rating);
         hotel.setRawRating(rawRating);
-
-        System.out.println(" rawRating из базы: " + hotel.getRawRating());
 
         return hotel;
     }
