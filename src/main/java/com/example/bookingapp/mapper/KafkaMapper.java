@@ -1,7 +1,9 @@
-package com.example.bookingapp.statistics.data.entity;
+package com.example.bookingapp.mapper;
 
-import com.example.bookingapp.statistics.model.KafkaBookingMessage;
-import com.example.bookingapp.statistics.model.KafkaUserMessage;
+import com.example.bookingapp.entity.BookingData;
+import com.example.bookingapp.entity.UserData;
+import com.example.bookingapp.dto.KafkaBookingMessage;
+import com.example.bookingapp.dto.KafkaUserMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

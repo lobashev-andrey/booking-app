@@ -4,9 +4,10 @@ import com.example.bookingapp.entity.Booking;
 import com.example.bookingapp.error.IncorrectRequestException;
 import com.example.bookingapp.filter.BookingFilter;
 import com.example.bookingapp.repository.BookingRepository;
-import com.example.bookingapp.statistics.model.KafkaBookingMessage;
-import com.example.bookingapp.statistics.model.KafkaMessage;
+import com.example.bookingapp.dto.KafkaBookingMessage;
+import com.example.bookingapp.dto.KafkaMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookingService {
 
     @Value("${app.kafka.kafka-booking-topic}")
@@ -27,11 +29,14 @@ public class BookingService {
     private final KafkaTemplate<String, KafkaMessage> kafkaTemplate;
 
     public List<Booking> findAll(BookingFilter filter) {
+        log.debug("findAll() method is called");
+
         return repository.findAll(
                 PageRequest.of(filter.getPageNumber(), filter.getPageSize())).getContent();
     }
 
     public Booking create(Booking booking) {
+        log.info("create() method is called");
         checkBeforeBooking(booking);
 
         Booking createdBooking = repository.save(booking);
@@ -45,6 +50,7 @@ public class BookingService {
     }
 
     public void checkBeforeBooking(Booking booking) {
+        log.info("checkBeforeBooking() method is called");
 
         List<Booking> crossBookingList = getCrossBookingList(
                 booking.getRoom().getId(), booking.getCheckIn(), booking.getCheckOut()
@@ -56,6 +62,8 @@ public class BookingService {
     }
 
     public List<Booking> getCrossBookingList(Long roomId, LocalDate checkIn, LocalDate checkOut) {
+        log.info("getCrossBookingList() method is called");
+
         if(checkIn.isAfter(checkOut) ||
                 checkIn.isBefore(LocalDate.now())) {
             throw new IncorrectRequestException("Введите корректные даты начала и окончания периода бронирования");

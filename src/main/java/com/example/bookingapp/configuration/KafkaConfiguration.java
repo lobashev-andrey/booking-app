@@ -1,6 +1,6 @@
-package com.example.bookingapp.statistics.configuration;
+package com.example.bookingapp.configuration;
 
-import com.example.bookingapp.statistics.model.KafkaMessage;
+import com.example.bookingapp.dto.KafkaMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;

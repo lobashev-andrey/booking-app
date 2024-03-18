@@ -23,7 +23,7 @@ public class HotelFilter {
 
     private Integer votes;
 
-    private Integer pageSize;
+    private Integer pageSize = 20;
 
-    private Integer pageNumber;
+    private Integer pageNumber = 0;
 }

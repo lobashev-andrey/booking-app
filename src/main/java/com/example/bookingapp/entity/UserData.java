@@ -1,4 +1,4 @@
-package com.example.bookingapp.statistics.data.entity;
+package com.example.bookingapp.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,26 +9,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "bookings")
-public class BookingData {
+@Document(collection = "users")
+public class UserData {
 
     @Id
     private String id;
 
-    private Long roomId;
-
     private Long userId;
 
-    private String checkIn;
-
-    private String checkOut;
 
     @Override
     public String toString() {
         return  id.substring(0, 19) +
-                ": roomId=" + roomId +
-                ", userId=" + userId +
-                ", checkIn=" + checkIn +
-                ", checkOut=" + checkOut;
+                ": userId=" + userId;
     }
 }

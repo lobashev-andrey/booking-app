@@ -7,6 +7,7 @@ import com.example.bookingapp.filter.HotelFilter;
 import com.example.bookingapp.service.HotelService;
 import com.example.bookingapp.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/hotel")
 @RequiredArgsConstructor
+@Slf4j
 public class HotelController {
 
     private final HotelService service;
@@ -23,6 +25,7 @@ public class HotelController {
 
     @GetMapping
     public ResponseEntity<HotelListResponse> getAll() {
+        log.info("HotelController: getAll() method is called");
 
         return ResponseEntity.ok(
                 mapper.hotelListToHotelListResponse(
@@ -32,6 +35,7 @@ public class HotelController {
 
     @GetMapping("/filter")
     public ResponseEntity<HotelFilterListResponse> filterBy(HotelFilter filter) {
+        log.info("HotelController: filterBy() method is called");
 
         return ResponseEntity.ok(
                 mapper.hotelListToHotelFilterListResponse(
@@ -43,6 +47,8 @@ public class HotelController {
 
     @GetMapping("/{id}")
     public ResponseEntity<HotelResponse> getById(@PathVariable Long id) {
+        log.info("HotelController: getById() method is called with id={}", id);
+
         return ResponseEntity.ok(
                 mapper.hotelToHotelResponse(
                         service.findById(id)));
@@ -51,6 +57,8 @@ public class HotelController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HotelResponse> create(@RequestBody HotelRequest request) {
+        log.info("HotelController: create() method is called");
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.hotelToHotelResponse(
                         service.create(
@@ -60,6 +68,8 @@ public class HotelController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<HotelResponseShort> update(@PathVariable Long id, @RequestBody HotelRequest request){
+        log.info("HotelController: update() method is called with id={}", id);
+
         return ResponseEntity.ok(
                 mapper.hotelToHotelResponseShort(
                         service.update(
@@ -68,6 +78,7 @@ public class HotelController {
 
     @PutMapping("/{id}/{mark}")
     public ResponseEntity<HotelResponse> changeRating(@PathVariable Long id, @PathVariable Integer mark) {
+        log.info("HotelController: changeRating() method is called with id={}", id);
 
         Hotel hotel = vote(service.findById(id), mark);
 
@@ -81,12 +92,15 @@ public class HotelController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("delete() method is called with id={}", id);
+
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // Вариант с хранением rawRating - близко к техзаданию (если голосов ближе к 10 млн, надо Double вместо Float)
     private Hotel vote(Hotel hotel, Integer mark) {
+        log.info("vote() method is called with mark={}", mark);
+
         if(mark < 1 || mark > 5) {
             throw new IncorrectRequestException("Для оценки отеля используйте целые числа от 1 до 5");
         }
@@ -103,41 +117,4 @@ public class HotelController {
 
         return hotel;
     }
-
-    // Вариант как в техзадании - дает некорректные результаты
-//    private Hotel vote(Hotel hotel, Integer mark) {
-//        if(mark < 1 || mark > 5) {
-//            throw new IncorrectRequestException("Для оценки отеля используйте числа от 1 до 5");
-//        }
-//
-//        Float rating = hotel.getRating();
-//        Integer votes = hotel.getVotes() + 1;
-//
-//        rating = (rating * votes - rating + mark) / votes;
-//        rating = Math.round(rating * 10) / 10f;
-//
-//        hotel.setRating(rating);
-//        hotel.setVotes(votes);
-//
-//        return hotel;
-//    }
-
-//    // Вариант с хранением totalRating  ( Надо добавить в сущность    private Float totalRating = 0f; )
-//    private Hotel vote(Hotel hotel, Integer mark) {
-//        if(mark < 1 || mark > 5) {
-//            throw new IncorrectRequestException("Для оценки отеля используйте числа от 1 до 5");
-//        }
-//        Float newTotalRating = hotel.getTotalRating() + mark;
-//        Integer newVotes = hotel.getVotes() + 1;
-//
-//        Float rating = Math.round(newTotalRating / newVotes * 10) / 10f;
-//
-//        hotel.setTotalRating(newTotalRating);
-//        hotel.setVotes(newVotes);
-//        hotel.setRating(rating);
-//
-//        return hotel;
-//    }
-
-
 }

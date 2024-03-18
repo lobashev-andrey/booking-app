@@ -6,6 +6,7 @@ import com.example.bookingapp.dto.BookingResponse;
 import com.example.bookingapp.entity.Booking;
 import com.example.bookingapp.service.RoomService;
 import com.example.bookingapp.service.UserService;
+import com.example.bookingapp.utils.DateParser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

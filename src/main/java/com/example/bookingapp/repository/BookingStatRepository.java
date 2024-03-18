@@ -1,6 +1,6 @@
-package com.example.bookingapp.statistics.data;
+package com.example.bookingapp.repository;
 
-import com.example.bookingapp.statistics.data.entity.BookingData;
+import com.example.bookingapp.entity.BookingData;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 public interface BookingStatRepository extends ReactiveMongoRepository<BookingData, Long> {
